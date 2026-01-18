@@ -25,6 +25,7 @@ pipeline {
 }
         stage('SonarQube Analysis') {
             steps {
+                dir('java-app')
                 withSonarQubeEnv("${SONARQUBE_ENV}") {
                     sh '''
                     mvn sonar:sonar \
