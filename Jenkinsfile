@@ -1,25 +1,29 @@
+
 pipeline {
-    agent /sonarqube-webhook/
+    agent { label "slave-1"}
+
+    environment {
+        SONARQUBE_ENV = 'sonarqube-server'
+        IMAGE_NAME = 'java-app'
+    }
 
     stages {
-       stage('git checkout') {
-                                  steps {
-                                            // Get some code from a GitHub repository
-                                            git 'https://github.com/siddana123/java-sample-app-docker.git'
-                                        }
-                                  }
-    
-    
-    
+
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/siddana123/java-sample-app-docker.git'
+            }
+        }
+
         stage('Build') {
             steps {
-                sh 'mvn clean package'
+                sh 'mvn clean package -DskipTests'
             }
         }
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('sonarqube-server') {
+                withSonarQubeEnv("${SONARQUBE_ENV}") {
                     sh '''
                     mvn sonar:sonar \
                     -Dsonar.projectKey=java-app \
@@ -35,6 +39,21 @@ pipeline {
                     waitForQualityGate abortPipeline: true
                 }
             }
+        }
+
+        stage('Docker Build') {
+            steps {
+                sh 'docker build -t ${IMAGE_NAME}:latest .'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Build, SonarQube analysis, and Docker image creation completed successfully'
+        }
+        failure {
+            echo 'Pipeline failed'
         }
     }
 }
