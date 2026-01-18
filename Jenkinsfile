@@ -17,11 +17,13 @@ pipeline {
 }
 
 
-        stage('Build') {
-            steps {
-                sh 'mvn clean package -DskipTests'
-            }
+       stage('Build') {
+    steps {
+        dir('java-app') {
+            sh 'mvn clean package -DskipTests'
         }
+    }
+}
 
         stage('SonarQube Analysis') {
             steps {
