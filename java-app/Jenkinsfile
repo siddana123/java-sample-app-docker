@@ -9,10 +9,12 @@ pipeline {
     stages {
 
         stage('Checkout') {
-            steps {
-                git 'https://github.com/siddana123/java-sample-app-docker.git'
-            }
-        }
+    steps {
+        git branch: 'main',
+            url: 'https://github.com/siddana123/java-sample-app-docker.git'
+    }
+}
+
 
         stage('Build') {
             steps {
