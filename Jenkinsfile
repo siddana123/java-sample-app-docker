@@ -1,4 +1,3 @@
-
 pipeline {
     agent { label "slave-1" }
 
@@ -38,7 +37,8 @@ pipeline {
                 }
             }
         }
-    }
+
+    }   // ✅ closes stages block
 
     post {
         success {
@@ -49,3 +49,5 @@ pipeline {
         }
     }
 }
+
+
