@@ -4,7 +4,7 @@ pipeline {
     environment {
         SONARQUBE_ENV = 'sonarqube-server'
         IMAGE_NAME = 'java-app'
-    } // ✅ closes environment block
+    } // ✅ closes environment block 
 
     stages {
 
@@ -14,7 +14,7 @@ pipeline {
                     sh 'mvn clean package -DskipTests'
                 }
             }
-        } // ✅ closes Build stage
+        } // ✅ closes Build stage: Deployment
 
         stage('SonarQube Analysis') {
             steps {
@@ -28,7 +28,7 @@ pipeline {
                     }
                 }
             }
-        } // ✅ closes SonarQube Analysis stage
+        } // ✅ closes SonarQube Analysis stage: scanning static code anaLYSIS
 
         stage('Docker Build') {
             steps {
