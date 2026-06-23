@@ -1,10 +1,10 @@
 pipeline {
-    agent { label "slave-1" }
+    agent { label "slave-1" } // ✅ closes agent block
 
     environment {
         SONARQUBE_ENV = 'sonarqube-server'
         IMAGE_NAME = 'java-app'
-    }
+    } // ✅ closes environment block
 
     stages {
 
@@ -14,7 +14,7 @@ pipeline {
                     sh 'mvn clean package -DskipTests'
                 }
             }
-        }
+        } // ✅ closes Build stage
 
         stage('SonarQube Analysis') {
             steps {
@@ -28,7 +28,7 @@ pipeline {
                     }
                 }
             }
-        }
+        } // ✅ closes SonarQube Analysis stage
 
         stage('Docker Build') {
             steps {
@@ -39,6 +39,7 @@ pipeline {
         }
 
     }   // ✅ closes stages block
+    // ✅ closes pipeline block
 
     post {
         success {
@@ -48,6 +49,7 @@ pipeline {
             echo 'Pipeline failed'
         }
     }
+    // ✅ closes post block
 }
 
 
